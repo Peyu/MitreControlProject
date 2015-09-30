@@ -11,6 +11,8 @@ package controlador;
  */
 public interface DBSentencias {
     
+    //Comentario de Prueba
+    
     public static String listaRes=" select * from basereserva.reserva";
    
     public static String listaHues=" select * from basereserva.huesped";
