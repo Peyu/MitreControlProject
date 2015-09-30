@@ -5,17 +5,27 @@
  */
 package modelo;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author peyu
  */
+
+
+
 public class Empresa {
     String razonSocial;
     float tarifa;
+    ArrayList<TelEmp> tels;
+    ArrayList<Huesped> huespedes;
+    
+    
 
     public Empresa(String razonSocial, float tarifa) {
         this.razonSocial = razonSocial;
         this.tarifa = tarifa;
+        
     }
 
     

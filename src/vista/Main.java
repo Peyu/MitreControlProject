@@ -5,21 +5,28 @@
  */
 package vista;
 
+/**
+ *
+ * @author peyu
+ */
+
 import controlador.ConeccionBD;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.Statement;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author peyu
- */
-public class PruebaDB extends javax.swing.JFrame implements controlador.DBSentencias {
 
-    private String query = controlador.DBSentencias.listaRes;
 
-    public PruebaDB() {
+
+public class Main extends javax.swing.JFrame implements controlador.DBSentencias  {
+
+    private String query =" select * from basereserva.reserva";
+    
+    /**
+     * Creates new form Main
+     */
+    public Main(java.awt.Frame parent, boolean modal) {
         initComponents();
     }
 
@@ -32,30 +39,24 @@ public class PruebaDB extends javax.swing.JFrame implements controlador.DBSenten
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        cboxListas = new javax.swing.JComboBox();
-        BtnConsultar = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        cmbListas = new javax.swing.JComboBox();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableMuestra = new javax.swing.JTable();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        cboxListas.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Listar Reservas", "Listar Huespedes" }));
-        cboxListas.addItemListener(new java.awt.event.ItemListener() {
+        jButton1.setText("btnConsultar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        cmbListas.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Listar Huespedes", "Listar Reservas" }));
+        cmbListas.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                cboxListasItemStateChanged(evt);
-            }
-        });
-        cboxListas.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cboxListasActionPerformed(evt);
-            }
-        });
-
-        BtnConsultar.setText("Consultar");
-        BtnConsultar.setToolTipText("");
-        BtnConsultar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BtnConsultarActionPerformed(evt);
+                cmbListasItemStateChanged(evt);
             }
         });
 
@@ -77,32 +78,33 @@ public class PruebaDB extends javax.swing.JFrame implements controlador.DBSenten
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(61, 61, 61)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 801, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(cboxListas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(BtnConsultar)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addGap(55, 55, 55)
+                        .addComponent(cmbListas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(38, 38, 38)
+                        .addComponent(jButton1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 764, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(48, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(47, 47, 47)
+                .addGap(40, 40, 40)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cboxListas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(BtnConsultar))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(44, Short.MAX_VALUE))
+                    .addComponent(jButton1)
+                    .addComponent(cmbListas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(40, 40, 40)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(87, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void BtnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnConsultarActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         int filas = 0;
 
@@ -142,38 +144,33 @@ public class PruebaDB extends javax.swing.JFrame implements controlador.DBSenten
         } catch (Exception e) {
             e.printStackTrace();
         }
+        
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
 
-
-    }//GEN-LAST:event_BtnConsultarActionPerformed
-
-    private void cboxListasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboxListasActionPerformed
+    private void cmbListasItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbListasItemStateChanged
         // TODO add your handling code here:
-    }//GEN-LAST:event_cboxListasActionPerformed
-
-    private void cboxListasItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cboxListasItemStateChanged
-        // TODO add your handling code here:
-        if (evt.getSource() == cboxListas) {
-            String seleccionado = (String) cboxListas.getSelectedItem();
+        if (evt.getSource() == cmbListas) {
+            String seleccionado = (String) cmbListas.getSelectedItem();
 
             if (seleccionado == "Listar Reservas") {
                 query = null;
                 query = controlador.DBSentencias.listaRes;
                 //System.out.println(query);
             }
- 
-            if (seleccionado == "Listar Huespedes") {
+        
+        if (seleccionado == "Listar Huespedes") {
                 query = null;
                 query = controlador.DBSentencias.listaHues;
 
                 //System.out.println(query);
-            }
+            }         
+        }        
+    }//GEN-LAST:event_cmbListasItemStateChanged
 
-
-    }//GEN-LAST:event_cboxListasItemStateChanged
-    }
     /**
-         * @param args the command line arguments
-         */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -188,36 +185,34 @@ public class PruebaDB extends javax.swing.JFrame implements controlador.DBSenten
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(PruebaDB.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(PruebaDB.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(PruebaDB.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(PruebaDB.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
-        /* Create and display the form */
+        /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new PruebaDB().setVisible(true);
+                Main dialog = new Main(new javax.swing.JFrame(), true);
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setVisible(true);
             }
         });
     }
 
-    public String getQuery() {
-        return query;
-    }
-
-    public void setQuery(String query) {
-        this.query = query;
-    }
-
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton BtnConsultar;
-    private javax.swing.JComboBox cboxListas;
+    private javax.swing.JComboBox cmbListas;
+    private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tableMuestra;
     // End of variables declaration//GEN-END:variables
