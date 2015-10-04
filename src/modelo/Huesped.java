@@ -16,6 +16,7 @@ public class Huesped {
     String mail;            //varchar(35)
     String observaciones;   //varchar(100)
     String vehiculo;        //varchar(8)
+    
 
     
     //Sera necesario hacer varios constructores para campos no nulos???? 
@@ -27,9 +28,11 @@ public class Huesped {
         this.mail = mail;
         this.observaciones = observaciones;
         this.vehiculo = vehiculo;
+    
+        System.out.println(tipoDocumento + DNI + nombre + mail + observaciones + vehiculo);
+    
     }
     
-
 
 
 

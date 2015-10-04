@@ -22,9 +22,19 @@ public class Empresa {
     
     
 
-    public Empresa(String razonSocial, float tarifa) {
+    public Empresa(String razonSocial, float tarifa, ArrayList t, ArrayList h) {
         this.razonSocial = razonSocial;
         this.tarifa = tarifa;
+        this.tels= t;
+        this.huespedes=h;
+        
+        System.out.println(razonSocial + tarifa);
+        
+        for (TelEmp telefono : tels)
+            System.out.println("telefono: " + telefono.numero);
+        
+        for (Huesped huesped : huespedes)
+            System.out.println("Huesped: " + huesped.nombre);
         
     }
 

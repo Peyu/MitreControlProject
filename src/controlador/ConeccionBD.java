@@ -59,15 +59,10 @@ public class ConeccionBD {
            modelo.addColumn(metaDatos.getColumnLabel(i+1));
            
            }
-           catch(Exception e){e.printStackTrace();}
-                   
+           catch(Exception e){e.printStackTrace();}            
        }
        
-       
-       
-       
-       return modelo;
-       
+       return modelo;       
    }
     
     
