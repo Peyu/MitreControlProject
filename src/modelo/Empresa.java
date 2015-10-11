@@ -34,7 +34,7 @@ public class Empresa {
             System.out.println("telefono: " + telefono.numero);
         
         for (Huesped huesped : huespedes)
-            System.out.println("Huesped: " + huesped.nombre);
+            System.out.println("Huesped: " + huesped.getNombre());
         
     }
 

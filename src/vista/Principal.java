@@ -35,7 +35,7 @@ public class Principal extends javax.swing.JFrame {
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem6 = new javax.swing.JMenuItem();
-        jMenuItem7 = new javax.swing.JMenuItem();
+        mniCrearReserva = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
 
         jMenuItem5.setText("jMenuItem5");
@@ -61,13 +61,23 @@ public class Principal extends javax.swing.JFrame {
         jMenu1.add(jMenuItem2);
 
         jMenuItem4.setText("Check-Out");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem4);
 
         jMenuItem6.setText("Planning");
         jMenu1.add(jMenuItem6);
 
-        jMenuItem7.setText("Admin. Reservas");
-        jMenu1.add(jMenuItem7);
+        mniCrearReserva.setText("Crear Reserva");
+        mniCrearReserva.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mniCrearReservaActionPerformed(evt);
+            }
+        });
+        jMenu1.add(mniCrearReserva);
 
         jMenuBar1.add(jMenu1);
 
@@ -99,6 +109,17 @@ public class Principal extends javax.swing.JFrame {
         // TODO add your handling code here:
         new CheckIn(this,true).setVisible(true);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void mniCrearReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniCrearReservaActionPerformed
+        // TODO add your handling code here:
+        new CrearReserva(this,true).setVisible(true);
+        
+    }//GEN-LAST:event_mniCrearReservaActionPerformed
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        // TODO add your handling code here:
+        new CheckOut(this,true).setVisible(true);
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -145,6 +166,6 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
-    private javax.swing.JMenuItem jMenuItem7;
+    private javax.swing.JMenuItem mniCrearReserva;
     // End of variables declaration//GEN-END:variables
 }

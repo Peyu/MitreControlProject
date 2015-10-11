@@ -58,15 +58,26 @@ public interface DBSentencias {
     
        //devuelve id de una reserva en currentdate a partir del nombre recibido por parametro 
     public static String idResCurrentDate = "SELECT reserva.idreserva " +
-"FROM  basereserva.huesped, basereserva.huesped_has_reserva, basereserva.reserva, basereserva.estadia " +
-"WHERE huesped.idhuesped = huesped_has_reserva.huesped_idhuesped " +
-"AND huesped_has_reserva.reserva_idreserva = reserva.idreserva " +
-"AND reserva.idreserva = estadia.idreserva " +
-"AND estadia.dia_reservado = curdate() " +
-"AND huesped.nombre =?;";
+    "FROM  basereserva.huesped, basereserva.huesped_has_reserva, basereserva.reserva, basereserva.estadia " +
+    "WHERE huesped.idhuesped = huesped_has_reserva.huesped_idhuesped " +
+    "AND huesped_has_reserva.reserva_idreserva = reserva.idreserva " +
+    "AND reserva.idreserva = estadia.idreserva " +
+    "AND estadia.dia_reservado = curdate() " +
+    "AND huesped.nombre =? LIMIT 1;";
     
+    //Crea reserva segun parametros
+    public static String crearReserva="INSERT INTO basereserva.reserva "
+            + "(fecha_reserva, estado, observaciones, importe_pagado, numero_hab) "
+            + "VALUES (?, ?, ?, ?, ?);";
     
+    //devuelve el id de la ultima reserva creada
+    public static String idUltimaRes="SELECT idreserva FROM basereserva.reserva "
+            + " ORDER BY fecha_reserva DESC LIMIT 1;";
     
+    //Crea Huesped segun parametros
+    public static String crearHuesped= "INSERT INTO basereserva.huesped "
+            + " (tipo_documento, documento, nombre, mail, observaciones, vehiculo, idempresa) "
+            + "VALUES (?,?,?,?,?,?,?);";
     
 }
 

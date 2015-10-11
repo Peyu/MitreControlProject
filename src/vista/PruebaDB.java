@@ -11,13 +11,16 @@ package vista;
  */
 
 import controlador.ConeccionBD;
+import controlador.XHuesped;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Iterator;
 import javax.swing.table.DefaultTableModel;
 import modelo.Empresa;
 import modelo.Huesped;
+import modelo.Reserva;
 import modelo.TelEmp;
 
 
@@ -193,16 +196,53 @@ public class PruebaDB extends javax.swing.JFrame implements controlador.DBSenten
         te.add(new TelEmp(4455536));
         te.add(new TelEmp(4220020));
         
-        ArrayList hu= new ArrayList<Huesped>();
+        ArrayList<Huesped> hu= new ArrayList();
         
         
-        Huesped hues1 = new Huesped("DNI ", 27982218,"Andres Coppola ","cop@gmail ","huesped frecuente ","JON 264 ");
-        Huesped hues2 = new Huesped("DNI ", 2798,"Andres Martinez ","mar@gmail ","huesped ladron ","JJJ 333 ");
+        Huesped hues1 = new Huesped("DNI ", "27982218","Andres Coppola ","cop@gmail ","huesped frecuente ","JON 264 ");
+        Huesped hues2 = new Huesped("DNI ", "2798","Andres Martinez ","mar@gmail ","huesped ladron ","JJJ 333 ");
         
-        hu.add(hues1);
-        hu.add(hues2);
+                
+          hu.add(hues1);
+          hu.add(hues2);
+          
+          
         
-        Empresa emp = new Empresa("Mi Empresa ", 333, te, hu );
+        
+        
+        Reserva res = new Reserva();
+        res.setHuespedes(hu);
+        //res.huespedes.add(hues1);
+        //res.huespedes.add(hues2);
+            
+   
+    for(Huesped huesped : res.getHuespedes())
+    {
+        System.out.println(huesped.getNombre()); 
+            
+    }
+
+              
+        
+      
+        
+        
+        
+
+        
+                
+//        Iterator it=hu.iterator();
+//        
+//        while(it.hasNext()){
+//        
+//        Object objeto = it.next();
+//            Huesped h = (Huesped)objeto;
+//            System.out.println(h.getDNI());
+//             
+//        }
+                  
+        
+        //Empresa emp = new Empresa("Mi Empresa ", 333, te, hu );
         
         
     }//GEN-LAST:event_jButton2ActionPerformed

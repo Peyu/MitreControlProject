@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import modelo.Huesped;
 import controlador.DBSentencias;
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 
 /**
@@ -16,16 +17,25 @@ import java.util.ArrayList;
  * @author peyu
  */
 public class XHuesped {
-    private Huesped hues01;
+    private Huesped hues;
 
     public XHuesped(Huesped hues01) {
-        this.hues01 = hues01;
+        this.hues = hues01;
     }
 
     public XHuesped() {
     }
     
     
+    public void Mostrar(){
+        System.out.println("Tipo: " + hues.getTipoDocumento());
+        System.out.println("Numero: " + hues.getDNI());
+        System.out.println("Nombre: " + hues.getNombre());
+        System.out.println("Mail: " + hues.getMail());
+        System.out.println("Obs: " + hues.getObservaciones());
+        System.out.println("Vehiculo: " + hues.getVehiculo());
+        
+    }
     
     public ResultSet HuespedesCheckIn(){
         String query=controlador.DBSentencias.HuespedesCheckIn;
@@ -65,14 +75,34 @@ public class XHuesped {
     
     }
     
+    public void CrearHuesped(String tipo, String documento, String nombre, String mail, String obs, String vehiculo, int idempresa){
+    
+        try{
+            String sql = DBSentencias.crearHuesped;
+            ConeccionBD cone= new ConeccionBD();
+            PreparedStatement sentencia =cone.conectar.prepareStatement(sql);
+            sentencia.setString(1, tipo);
+            sentencia.setString(2, documento);
+            sentencia.setString(3, nombre);
+            sentencia.setString(4, mail);
+            sentencia.setString(5, obs);
+            sentencia.setString(6, vehiculo);
+            sentencia.setInt(7, idempresa);
+            int rowsInserted = sentencia.executeUpdate();
+            System.out.println("se ingresaron " + rowsInserted + "fila/s nueva/s");  
+            
+        }
+        catch(Exception e){e.printStackTrace();}
+        
+    }
     
 //G&S 
     public Huesped getHues01() {
-        return hues01;
+        return hues;
     }
 
     public void setHues01(Huesped hues01) {
-        this.hues01 = hues01;
+        this.hues = hues01;
     }
     
     

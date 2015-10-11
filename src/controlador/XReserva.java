@@ -7,9 +7,13 @@ package controlador;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import modelo.Reserva;
 import controlador.ConeccionBD;
+import java.sql.Statement;
+import java.util.ArrayList;
+import modelo.Huesped;
+import vista.CrearReserva;
+import java.sql.Timestamp;
 
 
 /**
@@ -18,6 +22,7 @@ import controlador.ConeccionBD;
  */
 public class XReserva {
     private Reserva res;
+    private static ArrayList<Huesped> huesTemp;
 
     public XReserva(Reserva res) {
         this.res = res;
@@ -81,6 +86,51 @@ return filasModificadas;
   
 }
 
+//agrega un Huesped al ArrayList de huespedes static de CrearReserva 
+public void AgregaHuespedes(Huesped hues){
+    CrearReserva.res.getHuespedes().add(hues);  //Funciona?
+}
+
+public void CrearReserva(java.sql.Date fecha_reserva, java.sql.Date fecha_ing, java.sql.Date fecha_sal, String estado, String obs, float anticipo, int hab, ArrayList<Huesped> huespedes){
+    
+    try{
+        String sql = DBSentencias.crearReserva;
+        ConeccionBD cone= new ConeccionBD();
+        PreparedStatement sentencia =cone.conectar.prepareStatement(sql);
+        sentencia.setDate(1, fecha_reserva);
+        sentencia.setString(2, estado);
+        sentencia.setString(3, obs);
+        sentencia.setFloat(4, anticipo);
+        sentencia.setInt(5, hab);
+        int rowsInserted = sentencia.executeUpdate();
+        System.out.println("se ingresaron " + rowsInserted + "fila/s nueva/s");
+        
+    
+    } catch(Exception e){ e.printStackTrace();}
+
+}
+
+public int getIdUltimaRes(){
+
+    int idRes=0;
+       
+        try
+        {
+            String query = controlador.DBSentencias.idUltimaRes;
+            ConeccionBD cone= new ConeccionBD();
+            Statement sentencia = cone.conectar.createStatement();
+            ResultSet rs = sentencia.executeQuery(query);
+            rs.first();
+            idRes=rs.getInt(1);
+            
+        }
+            
+        catch(Exception e){ e.printStackTrace();}
+       
+    return idRes;
+    
+}
+
 
     //G&S
 
@@ -90,6 +140,14 @@ return filasModificadas;
 
     public void setRes(Reserva res) {
         this.res = res;
+    }
+
+    public static ArrayList<Huesped> getHuesTemp() {
+        return huesTemp;
+    }
+
+    public static void setHuesTemp(ArrayList<Huesped> huesTemp) {
+        XReserva.huesTemp = huesTemp;
     }
     
     

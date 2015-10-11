@@ -5,27 +5,60 @@
  */
 package vista;
 
-import java.awt.Dimension;
+import controlador.XHuesped;
+import controlador.XReserva;
+import java.util.ArrayList;
 import javax.swing.BorderFactory;
+import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
+import modelo.Huesped;
+import modelo.Reserva;
+import java.sql.Timestamp;
+
+
 
 /**
  *
  * @author peyu
- */
-public class CrearReserva extends javax.swing.JDialog {
+ * Falta poblar el cmb de habitaciones con el resutado de una busqueda en BD de hab disponibles
+ * Falta Accion en Boton Cancelar
+ * Falta accion en boton Menos
+ * Falta agregar idres/idhues a la tabla intermedia en la creacion de reserva/Huesped
+*/
 
+
+
+public class CrearReserva extends javax.swing.JDialog {
+    public static Reserva res;
+    //public static ArrayList<Huesped> huesTemp;
+    private DefaultListModel listModel;   //listModel para poblar JList lstHuespedes 
     /**
      * Creates new form CrearReserva
      */
     public CrearReserva(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        //configuracion inicil de paneles
+        setLocationRelativeTo(parent);
+        //Titulo del Panel
         pnlGroup.setBorder(BorderFactory.createTitledBorder("Huespedes"));
+        res = new Reserva();  //inicializo static res
+        listModel = new DefaultListModel();   
         
         
+       
         
-              
+        
+
+//        
+//         Huesped hues1 = new Huesped("DNI ", "27982218","Andres Coppola ","cop@gmail ","huesped frecuente ","JON 264 ");
+//       
+//        res.huespedes = new ArrayList();
+//        res.huespedes.add(hues1);
+//        
+//        //res.getHuespedes().add(hues1);
+//        XHuesped xh = new XHuesped(res.getHuespedes().get(1));
+//        xh.Mostrar();
+//              
         
         
     }
@@ -41,41 +74,48 @@ public class CrearReserva extends javax.swing.JDialog {
 
         pnlGroup = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList();
-        jButton4 = new javax.swing.JButton();
+        lstHuespedes = new javax.swing.JList();
+        btnMas = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        jButton5 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        btnMenos = new javax.swing.JButton();
+        btnAceptar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        txtaObs = new javax.swing.JTextArea();
         jButton1 = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
+        cmbEstado = new javax.swing.JComboBox();
+        txtAnticipo = new javax.swing.JTextField();
+        dpkIngreso = new org.jdesktop.swingx.JXDatePicker();
+        dpkSalida = new org.jdesktop.swingx.JXDatePicker();
+        jButton2 = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
+        cmbHab = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jList1.setFont(new java.awt.Font("Ubuntu", 0, 10)); // NOI18N
-        jList1.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item6", "Item 7", "Item 8" };
+        lstHuespedes.setFont(new java.awt.Font("Ubuntu", 0, 10)); // NOI18N
+        lstHuespedes.setModel(new javax.swing.AbstractListModel() {
+            String[] strings = { "" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
-        jList1.setEnabled(false);
-        jList1.setFixedCellHeight(10);
-        jScrollPane1.setViewportView(jList1);
+        lstHuespedes.setFixedCellHeight(10);
+        jScrollPane1.setViewportView(lstHuespedes);
 
-        jButton4.setText("+");
+        btnMas.setText("+");
+        btnMas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMasActionPerformed(evt);
+            }
+        });
 
         jLabel2.setText("Agregar Huespedes:");
 
-        jButton5.setText("-");
+        btnMenos.setText("-");
 
         javax.swing.GroupLayout pnlGroupLayout = new javax.swing.GroupLayout(pnlGroup);
         pnlGroup.setLayout(pnlGroupLayout);
@@ -91,8 +131,8 @@ public class CrearReserva extends javax.swing.JDialog {
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(pnlGroupLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(btnMas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnMenos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addContainerGap(36, Short.MAX_VALUE))))
         );
         pnlGroupLayout.setVerticalGroup(
@@ -103,14 +143,19 @@ public class CrearReserva extends javax.swing.JDialog {
                 .addGap(12, 12, 12)
                 .addGroup(pnlGroupLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlGroupLayout.createSequentialGroup()
-                        .addComponent(jButton4)
+                        .addComponent(btnMas)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton5))
+                        .addComponent(btnMenos))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(21, Short.MAX_VALUE))
         );
 
-        jButton3.setText("Aceptar");
+        btnAceptar.setText("Aceptar");
+        btnAceptar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAceptarActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Fecha Ingreso:");
 
@@ -120,21 +165,28 @@ public class CrearReserva extends javax.swing.JDialog {
 
         jLabel5.setText("Anticipo:");
 
-        jLabel6.setText("Observaciones:");
+        jLabel6.setText("Observaciones de la Reserva:");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane2.setViewportView(jTextArea1);
+        txtaObs.setColumns(20);
+        txtaObs.setRows(5);
+        jScrollPane2.setViewportView(txtaObs);
 
         jButton1.setText("Cancelar");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbEstado.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Tentativa", "Confirmada", "Cancelada" }));
 
-        jTextField1.setText("jTextField1");
+        txtAnticipo.setText("0.00");
 
-        jTextField2.setText("jTextField2");
+        jButton2.setText("salida a consola");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
-        jTextField3.setText("jTextField3");
+        jLabel7.setText("Hab:");
+
+        cmbHab.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "202", "1510" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -145,31 +197,37 @@ public class CrearReserva extends javax.swing.JDialog {
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(pnlGroup, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(30, 30, 30)
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel4)
                                 .addGap(18, 18, 18)
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(cmbEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField1))
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(dpkIngreso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(dpkSalida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1)
-                                    .addComponent(jLabel3))
+                                    .addComponent(jLabel5)
+                                    .addComponent(jLabel7))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextField2)
-                                    .addComponent(jTextField3)))))
+                                    .addComponent(cmbHab, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtAnticipo)))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(35, 35, 35)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
+                                .addComponent(jButton2)
+                                .addGap(78, 78, 78)
                                 .addComponent(jButton1)
                                 .addGap(18, 18, 18)
-                                .addComponent(jButton3))
+                                .addComponent(btnAceptar))
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel6)
                                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 490, javax.swing.GroupLayout.PREFERRED_SIZE)))))
@@ -185,33 +243,160 @@ public class CrearReserva extends javax.swing.JDialog {
                         .addGap(18, 18, 18)
                         .addComponent(jLabel6))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(51, 51, 51)
+                        .addGap(21, 21, 21)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(dpkIngreso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(dpkSalida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(cmbEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel5)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(txtAnticipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(5, 5, 5)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cmbHab, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel7))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton3)
-                    .addComponent(jButton1))
-                .addContainerGap(91, Short.MAX_VALUE))
+                    .addComponent(btnAceptar)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2))
+                .addContainerGap(41, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnMasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMasActionPerformed
+        // TODO add your handling code here:
+        new vista.AgregarHuesped(this,true).setVisible(true);
+    
+        
+        //Creo el DefaultLstModel para pasarle al Jlist
+        
+        
+        
+        //Recorro ArrayList y agrego elementos al DefaultListModel      
+        for(Huesped huesped : res.getHuespedes()){
+            listModel.addElement(huesped.getNombre());
+        }
+        
+        //Agrego el DefaultListModel al Jlist
+        lstHuespedes.setModel(listModel);
+        
+        
+        
+        
+        
+        
+        
+    }//GEN-LAST:event_btnMasActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+     
+        
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
+        // TODO add your handling code here:
+        
+        //bandera para saber si estan listos todos los campos
+        boolean datosOk= false;
+        java.sql.Date fecha_ingreso=null;
+        java.sql.Date fecha_reserva=null;
+        java.sql.Date fecha_salida=null;
+        String estado=null;
+        String observaciones=null;
+        float anticipo2 = 0;
+        int hab = 0;
+        int idRes=0;
+        
+        //Valido los campos y prepara datos para la reserva.
+       
+        if (listModel.isEmpty()){
+             JOptionPane.showMessageDialog(null, "Debe agregar al menos un Huesped a la reserva");
+             
+        }else{
+            
+            String obs= txtaObs.getText();
+            if (obs.length()>255){
+                  //agregar msg
+                JOptionPane.showMessageDialog(null, "Las observaciones no pueden sobrepasar los 255 caracteres");
+            }else{
+            
+                fecha_reserva = new java.sql.Date(new java.util.Date().getTime());
+                observaciones = txtaObs.getText();
+                
+                
+                if(dpkIngreso.getDate()==null || dpkSalida.getDate()==null){
+                    JOptionPane.showMessageDialog(null, "Las fechas de Ingreso y Egreso no pueden estar vacias");
+                }else{
+                    
+                    if(!(dpkIngreso.getDate().getTime() <= dpkSalida.getDate().getTime())){
+                        JOptionPane.showMessageDialog(null, "La fecha de Ingreso debe ser anterior a la de salida");
+                                       
+                    }else{
+                        datosOk = true;
+
+                        java.util.Date ingresoUtil = dpkIngreso.getDate();
+                        fecha_ingreso = new java.sql.Date(ingresoUtil.getTime());
+
+                        java.util.Date salidaUtil = dpkSalida.getDate();
+                        fecha_salida = new java.sql.Date(salidaUtil.getTime());
+
+                        estado= (String)cmbEstado.getSelectedItem();
+                        System.out.println(estado);
+
+                        String anticipo= txtAnticipo.getText();
+
+
+                        try {
+                            anticipo2 = Float.parseFloat(anticipo);
+                        }   
+                        catch(NumberFormatException e) {
+                             JOptionPane.showMessageDialog(null,"El anticipo debe ser numerico"); 
+                             datosOk = false;
+                        }
+
+                        hab = Integer.parseInt((String)cmbHab.getSelectedItem());
+                        System.out.println(hab);
+                    }        
+                    
+            }            
+            }
+                        
+        
+        }
+        
+        if (datosOk){
+            //si estan los datos listos guardo la reserva en BD
+            XReserva xr = new XReserva();
+            XHuesped xh = new XHuesped();
+            
+            xr.CrearReserva(fecha_reserva, fecha_ingreso, fecha_salida, estado, observaciones, anticipo2, hab, res.getHuespedes());
+            idRes = xr.getIdUltimaRes();
+            
+            for(Huesped huesped : res.getHuespedes()){
+                //Falta poner huesped.getIdEmp() al final en lugar de 1
+                xh.CrearHuesped(huesped.getTipoDocumento(), huesped.getDNI(), huesped.getNombre(), huesped.getMail(), huesped.getObservaciones(), huesped.getVehiculo(), 1);
+                            
+            }
+                
+            dispose();
+            
+        }
+            
+    }//GEN-LAST:event_btnAceptarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -256,24 +441,41 @@ public class CrearReserva extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAceptar;
+    private javax.swing.JButton btnMas;
+    private javax.swing.JButton btnMenos;
+    private javax.swing.JComboBox cmbEstado;
+    private javax.swing.JComboBox cmbHab;
+    private org.jdesktop.swingx.JXDatePicker dpkIngreso;
+    private org.jdesktop.swingx.JXDatePicker dpkSalida;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JComboBox jComboBox1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JList jList1;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
+    private javax.swing.JList lstHuespedes;
     private javax.swing.JPanel pnlGroup;
+    private javax.swing.JTextField txtAnticipo;
+    private javax.swing.JTextArea txtaObs;
     // End of variables declaration//GEN-END:variables
+
+
+//G&S
+
+    public Reserva getRes() {
+        return res;
+    }
+
+    public void setRes(Reserva res) {
+        this.res = res;
+    }
+
+
+
 }
