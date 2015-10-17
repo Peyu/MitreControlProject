@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import modelo.Huesped;
 import vista.CrearReserva;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 
 
 /**
@@ -94,6 +95,7 @@ public void AgregaHuespedes(Huesped hues){
 public void CrearReserva(java.sql.Date fecha_reserva, java.sql.Date fecha_ing, java.sql.Date fecha_sal, String estado, String obs, float anticipo, int hab, ArrayList<Huesped> huespedes){
     
     try{
+        //Grabo en DB los datos de la reserva excepto la estadia
         String sql = DBSentencias.crearReserva;
         ConeccionBD cone= new ConeccionBD();
         PreparedStatement sentencia =cone.conectar.prepareStatement(sql);
@@ -103,7 +105,27 @@ public void CrearReserva(java.sql.Date fecha_reserva, java.sql.Date fecha_ing, j
         sentencia.setFloat(4, anticipo);
         sentencia.setInt(5, hab);
         int rowsInserted = sentencia.executeUpdate();
-        System.out.println("se ingresaron " + rowsInserted + "fila/s nueva/s");
+        //System.out.println("se ingresaron " + rowsInserted + "fila/s nueva/s en Reserva");
+        
+        //Consigo la id de la reserva creada anteriormente
+        XReserva xr = new XReserva();
+        int idRes=xr.getIdUltimaRes();
+        
+        //Guardo cada uno de los dias en la tabla estadia con el idRes correspondiente                
+        LocalDate start = fecha_ing.toLocalDate();
+        LocalDate end = fecha_sal.toLocalDate();
+        sql = DBSentencias.GuardarFecha;
+        
+        while (!start.isAfter(end)) {
+            sentencia=cone.conectar.prepareStatement(sql);
+            sentencia.setInt(1, idRes);
+            sentencia.setDate(2, java.sql.Date.valueOf(start.toString()));
+            rowsInserted = sentencia.executeUpdate();
+            System.out.println("se ingreso " + rowsInserted + "fila nueva en Estadia");
+            
+            start = start.plusDays(1);
+        }
+        
         
     
     } catch(Exception e){ e.printStackTrace();}

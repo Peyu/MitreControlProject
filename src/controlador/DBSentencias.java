@@ -79,6 +79,20 @@ public interface DBSentencias {
             + " (tipo_documento, documento, nombre, mail, observaciones, vehiculo, idempresa) "
             + "VALUES (?,?,?,?,?,?,?);";
     
+    //guarda una fecha en tabla estadia
+    public static String GuardarFecha = "INSERT INTO basereserva.estadia (idreserva, dia_reservado)"
+            + " VALUES (?, ?);";
+    
+    //Devuelve un idhuesped buscando por tipo y numero de documento
+    public static String idHues="SELECT idhuesped FROM basereserva.huesped "
+            + "WHERE  tipo_documento = ? " 
+            + "AND documento = ?;";
+    
+    //Devuelve datos de Huesped a partir de un idhuesped
+    public static String datosHuesped= "SELECT * FROM basereserva.huesped "
+            + "WHERE  idhuesped=? ;";
+    
+    
 }
 
 

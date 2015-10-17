@@ -279,11 +279,7 @@ public class CrearReserva extends javax.swing.JDialog {
     private void btnMasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMasActionPerformed
         // TODO add your handling code here:
         new vista.AgregarHuesped(this,true).setVisible(true);
-    
-        
-        //Creo el DefaultLstModel para pasarle al Jlist
-        
-        
+                
         
         //Recorro ArrayList y agrego elementos al DefaultListModel      
         for(Huesped huesped : res.getHuespedes()){

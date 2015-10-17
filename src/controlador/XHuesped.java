@@ -96,6 +96,44 @@ public class XHuesped {
         
     }
     
+    public int getIdHues(String tipoDoc, String nroDoc){
+        int idHues=0;
+        String sql = DBSentencias.idHues;
+        
+        try{
+            ConeccionBD cone= new ConeccionBD();
+            PreparedStatement sentencia = cone.conectar.prepareStatement(sql);
+            sentencia.setString(1, tipoDoc);
+            sentencia.setString(2, nroDoc);
+            ResultSet rs = sentencia.executeQuery();
+            rs.first();
+            idHues=rs.getInt(1);
+            
+        }catch(Exception e){e.printStackTrace();}
+        
+    
+        return idHues;
+    }
+    
+    public ResultSet getDatosHuesped(int idHues){
+         
+        String sql = DBSentencias.datosHuesped;
+        ResultSet rs=null;
+        
+        try{
+            ConeccionBD cone= new ConeccionBD();
+            PreparedStatement sentencia = cone.conectar.prepareStatement(sql);
+            sentencia.setInt(1, idHues);
+            
+            rs = sentencia.executeQuery();
+                        
+        }catch(Exception e){e.printStackTrace();}
+        
+    
+        return rs;   
+        
+    }
+    
 //G&S 
     public Huesped getHues01() {
         return hues;

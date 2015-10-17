@@ -7,6 +7,7 @@ package vista;
 
 import controlador.XHuesped;
 import controlador.XReserva;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import modelo.Huesped;
 
@@ -16,7 +17,7 @@ import modelo.Huesped;
  * Falta validar los datos
  */
 public class AgregarHuesped extends javax.swing.JDialog {
-
+    static boolean huespedExiste=false;
     /**
      * Creates new form AgregarHuesped
      */
@@ -47,7 +48,7 @@ public class AgregarHuesped extends javax.swing.JDialog {
         txtVehiculo = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        txtObs = new javax.swing.JTextArea();
+        txtaObs = new javax.swing.JTextArea();
         btnAgregar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
 
@@ -55,7 +56,7 @@ public class AgregarHuesped extends javax.swing.JDialog {
 
         jLabel1.setText("Nro. Documento:");
 
-        jLabel2.setText("Tipo:");
+        jLabel2.setText("Tipo Documento:");
 
         jLabel3.setText("Nombre:");
 
@@ -63,19 +64,34 @@ public class AgregarHuesped extends javax.swing.JDialog {
 
         jLabel5.setText("Vehículo:");
 
-        cmbTipo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "DNI", "CI", "LE", "LC", "PASAPORTE" }));
+        txtNumero.setNextFocusableComponent(txtNombre);
+        txtNumero.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtNumeroFocusLost(evt);
+            }
+        });
 
+        cmbTipo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "DNI", "CI", "LE", "LC", "PASAPORTE" }));
+        cmbTipo.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        cmbTipo.setNextFocusableComponent(txtNumero);
+
+        txtNombre.setNextFocusableComponent(txtMail);
+
+        txtMail.setNextFocusableComponent(txtVehiculo);
         txtMail.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtMailActionPerformed(evt);
             }
         });
 
+        txtVehiculo.setNextFocusableComponent(txtaObs);
+
         jLabel6.setText("Observaciones del Huesped:");
 
-        txtObs.setColumns(20);
-        txtObs.setRows(5);
-        jScrollPane1.setViewportView(txtObs);
+        txtaObs.setColumns(20);
+        txtaObs.setRows(5);
+        txtaObs.setNextFocusableComponent(btnAgregar);
+        jScrollPane1.setViewportView(txtaObs);
 
         btnAgregar.setText("Agregar");
         btnAgregar.addActionListener(new java.awt.event.ActionListener() {
@@ -85,47 +101,51 @@ public class AgregarHuesped extends javax.swing.JDialog {
         });
 
         btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
+                .addContainerGap(18, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(btnCancelar)
                         .addGap(18, 18, 18)
                         .addComponent(btnAgregar))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtVehiculo))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(jLabel1)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel2)
-                                        .addGap(98, 98, 98)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(cmbTipo, 0, 1, Short.MAX_VALUE)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addComponent(jLabel5)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(txtVehiculo))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                .addComponent(jLabel3)
+                                                .addGap(18, 18, 18))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jLabel4)
+                                                .addGap(47, 47, 47)))
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(txtMail)
+                                            .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                    .addComponent(jLabel1)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(txtNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(jLabel3)
-                                        .addGap(18, 18, 18))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel4)
-                                        .addGap(47, 47, 47)))
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtMail)
-                                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(18, 18, 18)
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cmbTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel6)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE))))
@@ -136,16 +156,17 @@ public class AgregarHuesped extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(txtNumero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6))
+                    .addComponent(jLabel6)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel2)
+                        .addComponent(cmbTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(cmbTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(jLabel1)
+                            .addComponent(txtNumero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(12, 12, 12)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
                             .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -174,7 +195,8 @@ public class AgregarHuesped extends javax.swing.JDialog {
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         // TODO add your handling code here:
-        Huesped hues= new Huesped((String)cmbTipo.getSelectedItem(),txtNumero.getText(),txtNombre.getText(),txtMail.getText(),txtObs.getText(),txtVehiculo.getText());
+       
+        Huesped hues= new Huesped((String)cmbTipo.getSelectedItem(),txtNumero.getText(),txtNombre.getText(),txtMail.getText(),txtaObs.getText(),txtVehiculo.getText());
         XHuesped xh = new XHuesped(hues);
         xh.Mostrar();
         
@@ -188,6 +210,48 @@ public class AgregarHuesped extends javax.swing.JDialog {
         
     }//GEN-LAST:event_btnAgregarActionPerformed
 
+    //rellena campos si el huesped ya existe
+    private void txtNumeroFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtNumeroFocusLost
+        // TODO add your handling code here:
+        
+        //EN DESARROLLO OJO NO TIENE QUE GRBAR HUESPED EXISTENTE
+        
+        //Obtengo tipo y nro de documento        
+        String tipoDoc = (String)cmbTipo.getSelectedItem();
+        String doc= txtNumero.getText();
+        
+        //Obtengo idHues desde BD si ya existe
+        XHuesped xh = new XHuesped();
+        int idHues = xh.getIdHues(tipoDoc, doc);
+        
+        //LLeno los campos con lo que traje de la BD
+        if (idHues>=1){
+            ResultSet datosHuesped=xh.getDatosHuesped(idHues);
+            
+            try{
+                datosHuesped.first();
+                
+                txtNombre.setText(datosHuesped.getString("nombre"));
+                txtMail.setText(datosHuesped.getString("mail"));
+                txtVehiculo.setText(datosHuesped.getString("vehiculo"));
+                txtaObs.setText(datosHuesped.getString("observaciones"));
+                              
+            }catch(Exception e){ e.printStackTrace();}
+        
+        }
+        
+        
+        
+    }//GEN-LAST:event_txtNumeroFocusLost
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        // TODO add your handling code here:
+        dispose();
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    
+    
+    
     /**
      * @param args the command line arguments
      */
@@ -244,7 +308,7 @@ public class AgregarHuesped extends javax.swing.JDialog {
     private javax.swing.JTextField txtMail;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtNumero;
-    private javax.swing.JTextArea txtObs;
     private javax.swing.JTextField txtVehiculo;
+    private javax.swing.JTextArea txtaObs;
     // End of variables declaration//GEN-END:variables
 }
