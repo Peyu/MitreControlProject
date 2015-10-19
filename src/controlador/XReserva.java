@@ -92,7 +92,7 @@ public void AgregaHuespedes(Huesped hues){
     CrearReserva.res.getHuespedes().add(hues);  //Funciona?
 }
 
-public void CrearReserva(java.sql.Date fecha_reserva, java.sql.Date fecha_ing, java.sql.Date fecha_sal, String estado, String obs, float anticipo, int hab, ArrayList<Huesped> huespedes){
+public void CrearReserva(java.sql.Date fecha_reserva, java.sql.Date fecha_ing, java.sql.Date fecha_sal, String estado, String obs, float anticipo, int hab){
     
     try{
         //Grabo en DB los datos de la reserva excepto la estadia
@@ -151,6 +151,23 @@ public int getIdUltimaRes(){
        
     return idRes;
     
+}
+
+public void GrabarTableIntermedia(int idHues, int idRes){
+
+    try{
+                
+        String sql = DBSentencias.guardaHuespedEnReserva;
+        ConeccionBD cone= new ConeccionBD();
+        PreparedStatement sentencia =cone.conectar.prepareStatement(sql);
+        sentencia.setInt(1, idHues);
+        sentencia.setInt(2, idRes);
+        int rowsInserted = sentencia.executeUpdate();
+        //System.out.println("se ingresaron " + rowsInserted + "fila/s nueva/s en Reserva");
+        
+                
+    } catch(Exception e){ e.printStackTrace();}
+
 }
 
 

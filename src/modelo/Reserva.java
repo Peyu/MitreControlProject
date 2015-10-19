@@ -32,7 +32,7 @@ import java.util.ArrayList;
 
 public class Reserva {
     
-    private String fecha_reserva;                 //si se prepara el String parece guardarse bien en db
+    private String fecha_reserva;   //si se prepara el String parece guardarse bien en db
     private String estado;          //Varchar(20)
     private String observaciones;   //Varchar(255)
     private float importe_pagado;
@@ -42,14 +42,6 @@ public class Reserva {
     private String fecha_ingreso;
     private String fecha_salida;
     
-    
-    
-    //ejemplo de como preparar el string
-//   Date miFecha = new Date(Date.UTC(2015, 10, 15, 14, 00, 00));
-//     
-//   java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//    
-//   String fecha = sdf.format(miFecha); 
 
     //Constructor con todos los parametros
     public Reserva(String fecha_reserva, String estado, String observaciones, float importe_pagado, int numero_hab, ArrayList<Huesped> huespedes, String fecha_ingreso, String fecha_salida) {
@@ -68,8 +60,6 @@ public class Reserva {
         huespedes = new ArrayList();
         
     }
-
-   
 
     
 //G&S

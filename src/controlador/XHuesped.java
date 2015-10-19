@@ -106,10 +106,13 @@ public class XHuesped {
             sentencia.setString(1, tipoDoc);
             sentencia.setString(2, nroDoc);
             ResultSet rs = sentencia.executeQuery();
-            rs.first();
-            idHues=rs.getInt(1);
+            if(rs.next()){
+            
+              idHues=rs.getInt(1);
+            }
             
         }catch(Exception e){e.printStackTrace();}
+        
         
     
         return idHues;
@@ -131,6 +134,26 @@ public class XHuesped {
         
     
         return rs;   
+        
+    }
+    
+    public int getUltimoId(){
+            int idHues=0;
+       
+        try
+        {
+            String query = controlador.DBSentencias.idUltimoHues;
+            ConeccionBD cone= new ConeccionBD();
+            Statement sentencia = cone.conectar.createStatement();
+            ResultSet rs = sentencia.executeQuery(query);
+            rs.first();
+            idHues=rs.getInt(1);
+            
+        }
+            
+        catch(Exception e){ e.printStackTrace();}
+       
+    return idHues;
         
     }
     

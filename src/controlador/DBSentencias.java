@@ -72,7 +72,13 @@ public interface DBSentencias {
     
     //devuelve el id de la ultima reserva creada
     public static String idUltimaRes="SELECT idreserva FROM basereserva.reserva "
-            + " ORDER BY fecha_reserva DESC LIMIT 1;";
+            + " ORDER BY idreserva DESC LIMIT 1;";
+    
+    //devuelve el id del último Huesped grabado
+    public static String idUltimoHues="SELECT idhuesped FROM basereserva.huesped "
+            + " ORDER BY idhuesped DESC LIMIT 1;";
+    
+    
     
     //Crea Huesped segun parametros
     public static String crearHuesped= "INSERT INTO basereserva.huesped "
@@ -91,6 +97,10 @@ public interface DBSentencias {
     //Devuelve datos de Huesped a partir de un idhuesped
     public static String datosHuesped= "SELECT * FROM basereserva.huesped "
             + "WHERE  idhuesped=? ;";
+    
+    //Guarda en tabla intemedia Huesped_has_Reserva
+    public static String guardaHuespedEnReserva ="INSERT INTO basereserva.huesped_has_reserva "
+            + "(huesped_idhuesped, reserva_idreserva) VALUES (?, ?);";
     
     
 }

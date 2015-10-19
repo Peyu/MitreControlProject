@@ -17,11 +17,33 @@ public class Huesped {
     private String observaciones;   //varchar(100)
     private String vehiculo;        //varchar(8)
     private int idEmp;
-
+    private int idHues;             //Actua como flag para CrearReserva
+                                    //si contiene un int, no grabar en BD
+                                    //si contiene null, grabar en BD
     
     //Constructores:
+
+    //Todos los parametros sin idEmp
+    public Huesped(String tipoDocumento, String DNI, String nombre, String mail, String observaciones, String vehiculo, int idHues) {
+        this.tipoDocumento = tipoDocumento;
+        this.DNI = DNI;
+        this.nombre = nombre;
+        this.mail = mail;
+        this.observaciones = observaciones;
+        this.vehiculo = vehiculo;
+        this.idHues = idHues;
+    }
     
-    //todos los parametros sin idEmp
+    //Solo idHues y nombre
+    public Huesped(String nombre, int idHues){
+        this.idHues=idHues;
+        this.nombre=nombre;
+    }
+    
+    
+    
+    
+//    todos los parametros sin idEmp ni idHues
     public Huesped(String tipoDocumento, String DNI, String nombre, String mail, String observaciones, String vehiculo) {
         this.tipoDocumento = tipoDocumento;
         this.DNI = DNI;
@@ -33,23 +55,14 @@ public class Huesped {
             
     }
 
-    public Huesped(String tipoDocumento, String DNI, String nombre, String mail, String observaciones, String vehiculo, int idEmp) {
-        this.tipoDocumento = tipoDocumento;
-        this.DNI = DNI;
-        this.nombre = nombre;
-        this.mail = mail;
-        this.observaciones = observaciones;
-        this.vehiculo = vehiculo;
-        this.idEmp = idEmp;
-    }
-
     
+//G&S    
     
     public int getIdEmp() {
         return idEmp;
     }
 
-//G&S
+
     public void setIdEmp(int idEmp) {
         this.idEmp = idEmp;
     }
@@ -100,6 +113,14 @@ public class Huesped {
 
     public void setVehiculo(String vehiculo) {
         this.vehiculo = vehiculo;
+    }
+
+    public int getIdHues() {
+        return idHues;
+    }
+
+    public void setIdHues(int idHues) {
+        this.idHues = idHues;
     }
     
     

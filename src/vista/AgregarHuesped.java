@@ -17,7 +17,10 @@ import modelo.Huesped;
  * Falta validar los datos
  */
 public class AgregarHuesped extends javax.swing.JDialog {
-    static boolean huespedExiste=false;
+    public boolean huespedExiste=false;
+    private int id_Huesped=0; 
+    
+           
     /**
      * Creates new form AgregarHuesped
      */
@@ -155,11 +158,11 @@ public class AgregarHuesped extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(24, 24, 24)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel2)
-                        .addComponent(cmbTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(cmbTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
@@ -196,12 +199,23 @@ public class AgregarHuesped extends javax.swing.JDialog {
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         // TODO add your handling code here:
        
-        Huesped hues= new Huesped((String)cmbTipo.getSelectedItem(),txtNumero.getText(),txtNombre.getText(),txtMail.getText(),txtaObs.getText(),txtVehiculo.getText());
-        XHuesped xh = new XHuesped(hues);
-        xh.Mostrar();
+        //Agrego el huesped al array
+        //Si el Huesped existe en BD, le paso la ID y nombre, de lo contrario, todos los datos sin id
         
+        Huesped hues;
+        if (huespedExiste){
+            hues= new Huesped(txtNombre.getText(),id_Huesped);
         
-        CrearReserva.res.getHuespedes().clear();  
+        }else{
+        
+            hues= new Huesped((String)cmbTipo.getSelectedItem(),txtNumero.getText(),txtNombre.getText(),txtMail.getText(),txtaObs.getText(),txtVehiculo.getText());
+        }
+
+
+        //XHuesped xh = new XHuesped(hues);
+        //xh.Mostrar();
+        
+        //Agrego huesped al Array
         CrearReserva.res.getHuespedes().add(hues);
         //CrearReserva.huesTemp.add(hues);
         
@@ -214,7 +228,7 @@ public class AgregarHuesped extends javax.swing.JDialog {
     private void txtNumeroFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtNumeroFocusLost
         // TODO add your handling code here:
         
-        //EN DESARROLLO OJO NO TIENE QUE GRBAR HUESPED EXISTENTE
+        //EN DESARROLLO OJO NO TIENE QUE GRABAR HUESPED EXISTENTE
         
         //Obtengo tipo y nro de documento        
         String tipoDoc = (String)cmbTipo.getSelectedItem();
@@ -224,8 +238,9 @@ public class AgregarHuesped extends javax.swing.JDialog {
         XHuesped xh = new XHuesped();
         int idHues = xh.getIdHues(tipoDoc, doc);
         
+        //SI el huesped existe en BD
         //LLeno los campos con lo que traje de la BD
-        if (idHues>=1){
+        if (idHues>0){
             ResultSet datosHuesped=xh.getDatosHuesped(idHues);
             
             try{
@@ -238,6 +253,10 @@ public class AgregarHuesped extends javax.swing.JDialog {
                               
             }catch(Exception e){ e.printStackTrace();}
         
+        //marco que el huesped ya existe en BD y guardo el id
+            huespedExiste = true;
+            id_Huesped=idHues;
+            
         }
         
         
@@ -311,4 +330,18 @@ public class AgregarHuesped extends javax.swing.JDialog {
     private javax.swing.JTextField txtVehiculo;
     private javax.swing.JTextArea txtaObs;
     // End of variables declaration//GEN-END:variables
+
+//G&S
+
+    public int getId_huesped() {
+        return id_Huesped;
+    }
+
+    public void setId_huesped(int id_huesped) {
+        this.id_Huesped = id_huesped;
+    }
+    
+    
+
+
 }

@@ -279,16 +279,23 @@ public class CrearReserva extends javax.swing.JDialog {
     private void btnMasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMasActionPerformed
         // TODO add your handling code here:
         new vista.AgregarHuesped(this,true).setVisible(true);
-                
         
-        //Recorro ArrayList y agrego elementos al DefaultListModel      
+        int vueltas=0;
+        
+        
+        //Vacio el DefaulListModel para evitar repeticiones
+        listModel.clear();
+        
+        //Recorro ArrayList y agrego elementos al DefaultListModel
         for(Huesped huesped : res.getHuespedes()){
+                        
             listModel.addElement(huesped.getNombre());
         }
         
+        
+        
         //Agrego el DefaultListModel al Jlist
         lstHuespedes.setModel(listModel);
-        
         
         
         
@@ -379,15 +386,41 @@ public class CrearReserva extends javax.swing.JDialog {
             XReserva xr = new XReserva();
             XHuesped xh = new XHuesped();
             
-            xr.CrearReserva(fecha_reserva, fecha_ingreso, fecha_salida, estado, observaciones, anticipo2, hab, res.getHuespedes());
+            xr.CrearReserva(fecha_reserva, fecha_ingreso, fecha_salida, estado, observaciones, anticipo2, hab);
             idRes = xr.getIdUltimaRes();
+            System.out.println("id de la reserva: " + idRes);
+            
+            
+            ArrayList<Integer> idsDeHuesped = new ArrayList();
+            //Grabo cada Huesped Creado en BD y guardo Ids en Array (De los creados y existentes)
+            int i=0;
+            
             
             for(Huesped huesped : res.getHuespedes()){
-                //Falta poner huesped.getIdEmp() al final en lugar de 1
-                xh.CrearHuesped(huesped.getTipoDocumento(), huesped.getDNI(), huesped.getNombre(), huesped.getMail(), huesped.getObservaciones(), huesped.getVehiculo(), 1);
-                            
+                //Falta poner huesped.getIdEmp() al final en lugar de 1 en xh.CrearHuesped
+                i++;
+                System.out.println("Vuelta " +i);
+                if(huesped.getIdHues()>0){
+                    idsDeHuesped.add(huesped.getIdHues());
+                    System.out.println("Id del Huesped creado anteriormente agregado al array: " + huesped.getIdHues());
+                }else{
+                
+                    xh.CrearHuesped(huesped.getTipoDocumento(), huesped.getDNI(), huesped.getNombre(), huesped.getMail(), huesped.getObservaciones(), huesped.getVehiculo(), 1);
+                    idsDeHuesped.add(xh.getUltimoId());
+                    System.out.println("id de HUesped creado actualmente e ingresado al array: " + xh.getUltimoId());
+                    
+                }            
             }
                 
+            //Grabo en la tabla intermedia los idhuesped con la idres correspondiente
+            
+            for(int id : idsDeHuesped){
+                
+                xr.GrabarTableIntermedia(id, idRes);
+                //System.out.println("id huesped a grabar: " + id);
+                
+            }
+            
             dispose();
             
         }
